@@ -47,6 +47,8 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Optional;
 
+import static org.gradle.internal.execution.fingerprint.InputFingerprinter.union;
+
 public class CaptureStateBeforeExecutionStep extends BuildOperationStep<PreviousExecutionContext, CachingResult> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CaptureStateBeforeExecutionStep.class);
 
@@ -257,22 +259,6 @@ public class CaptureStateBeforeExecutionStep extends BuildOperationStep<Previous
         interface Result {
             Result INSTANCE = new Result() {
             };
-        }
-    }
-
-    private static <K extends Comparable<?>, V> ImmutableSortedMap<K, V> union(
-        ImmutableSortedMap<K, V> a,
-        ImmutableSortedMap<K, V> b
-    ) {
-        if (a.isEmpty()) {
-            return b;
-        } else if (b.isEmpty()) {
-            return a;
-        } else {
-            return ImmutableSortedMap.<K, V>naturalOrder()
-                .putAll(a)
-                .putAll(b)
-                .build();
         }
     }
 }
