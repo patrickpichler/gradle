@@ -28,6 +28,8 @@ import org.gradle.api.artifacts.ConfigurationVariant;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.PublishArtifact;
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition;
+import org.gradle.api.attributes.Category;
+import org.gradle.api.attributes.DocsType;
 import org.gradle.api.attributes.LibraryElements;
 import org.gradle.api.attributes.Usage;
 import org.gradle.api.component.AdhocComponentWithVariants;
@@ -284,6 +286,22 @@ public class JavaPlugin implements Plugin<Project> {
         SourceSetContainer sourceSets = pluginExtension.getSourceSets();
 
         SourceSet main = sourceSets.create(SourceSet.MAIN_SOURCE_SET_NAME);
+
+        project.getConfigurations().create("transitiveSourcesElements", conf -> {
+            conf.setVisible(false);
+            conf.setCanBeConsumed(true);
+            conf.setCanBeResolved(false);
+
+//            conf.getOutgoing().variants(); // TODO??
+
+            conf.extendsFrom(project.getConfigurations().getByName(main.getImplementationConfigurationName()));
+            conf.attributes(attr -> {
+                attr.attribute(Usage.USAGE_ATTRIBUTE, objectFactory.named(Usage.class, Usage.JAVA_RUNTIME));
+                attr.attribute(Category.CATEGORY_ATTRIBUTE, objectFactory.named(Category.class, Category.DOCUMENTATION));
+                attr.attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objectFactory.named(DocsType.class, "source-folders"));
+            });
+            main.getJava().getSrcDirs().forEach(srcDir -> conf.outgoing(o -> o.artifact(srcDir)));
+        });
 
         // Register the project's source set output directories
         sourceSets.all(sourceSet ->
