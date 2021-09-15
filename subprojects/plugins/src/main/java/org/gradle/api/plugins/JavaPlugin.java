@@ -286,23 +286,6 @@ public class JavaPlugin implements Plugin<Project> {
         SourceSetContainer sourceSets = pluginExtension.getSourceSets();
 
         SourceSet main = sourceSets.create(SourceSet.MAIN_SOURCE_SET_NAME);
-
-        project.getConfigurations().create("transitiveSourcesElements", conf -> {
-            conf.setVisible(false);
-            conf.setCanBeConsumed(true);
-            conf.setCanBeResolved(false);
-
-//            conf.getOutgoing().variants(); // TODO??
-
-            conf.extendsFrom(project.getConfigurations().getByName(main.getImplementationConfigurationName()));
-            conf.attributes(attr -> {
-                attr.attribute(Usage.USAGE_ATTRIBUTE, objectFactory.named(Usage.class, Usage.JAVA_RUNTIME));
-                attr.attribute(Category.CATEGORY_ATTRIBUTE, objectFactory.named(Category.class, Category.DOCUMENTATION));
-                attr.attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objectFactory.named(DocsType.class, "source-folders"));
-            });
-            main.getJava().getSrcDirs().forEach(srcDir -> conf.outgoing(o -> o.artifact(srcDir)));
-        });
-
         // Register the project's source set output directories
         sourceSets.all(sourceSet ->
             buildOutputCleanupRegistry.registerOutputs(sourceSet.getOutput())
@@ -380,6 +363,16 @@ public class JavaPlugin implements Plugin<Project> {
                 return processResources.get().getDestinationDir();
             }
         });
+
+
+        ConfigurationVariant transitiveSourcesElements = runtimeVariants.create("transitiveSourcesElements");
+        transitiveSourcesElements.attributes(attr -> {
+            attr.attribute(Usage.USAGE_ATTRIBUTE, objectFactory.named(Usage.class, Usage.JAVA_RUNTIME));
+            attr.attribute(Category.CATEGORY_ATTRIBUTE, objectFactory.named(Category.class, Category.DOCUMENTATION));
+            attr.attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objectFactory.named(DocsType.class, "source-folders"));
+        });
+        sourceSet.getJava().getSrcDirs().forEach(srcDir -> transitiveSourcesElements.artifact(srcDir));
+
     }
 
     private void configureBuild(Project project) {
