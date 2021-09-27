@@ -19,7 +19,6 @@ package org.gradle.api.internal.tasks.properties;
 import org.gradle.internal.file.TreeType;
 import org.gradle.internal.scan.UsedByScanPlugin;
 
-@UsedByScanPlugin("test-distribution")
 public enum  OutputFilePropertyType {
     FILE(TreeType.FILE),
     DIRECTORY(TreeType.DIRECTORY),
@@ -32,7 +31,6 @@ public enum  OutputFilePropertyType {
         this.outputType = outputType;
     }
 
-    @UsedByScanPlugin("test-distribution")
     public TreeType getOutputType() {
         return outputType;
     }
