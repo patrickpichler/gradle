@@ -25,7 +25,6 @@ import org.gradle.api.internal.TaskInternal
 import org.gradle.api.internal.TaskOutputsInternal
 import org.gradle.api.internal.changedetection.TaskExecutionMode
 import org.gradle.api.internal.file.FileOperations
-import org.gradle.api.internal.file.TestFiles
 import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.api.internal.tasks.InputChangesAwareTaskAction
 import org.gradle.api.internal.tasks.TaskExecutionContext
@@ -41,7 +40,6 @@ import org.gradle.initialization.DefaultBuildCancellationToken
 import org.gradle.internal.event.ListenerManager
 import org.gradle.internal.exceptions.DefaultMultiCauseException
 import org.gradle.internal.exceptions.MultiCauseException
-import org.gradle.internal.execution.impl.DefaultOutputSnapshotter
 import org.gradle.internal.execution.BuildOutputCleanupRegistry
 import org.gradle.internal.execution.OutputChangeListener
 import org.gradle.internal.execution.WorkValidationContext
@@ -52,6 +50,7 @@ import org.gradle.internal.execution.history.OverlappingOutputDetector
 import org.gradle.internal.execution.history.PreviousExecutionState
 import org.gradle.internal.execution.history.changes.DefaultExecutionStateChangeDetector
 import org.gradle.internal.execution.impl.DefaultExecutionEngine
+import org.gradle.internal.execution.impl.DefaultOutputSnapshotter
 import org.gradle.internal.execution.impl.DefaultWorkValidationContext
 import org.gradle.internal.execution.steps.AssignWorkspaceStep
 import org.gradle.internal.execution.steps.BroadcastChangingOutputsStep
@@ -111,7 +110,6 @@ class ExecuteActionsTaskExecuterTest extends Specification {
     def taskProperties = Stub(TaskProperties) {
         getInputProperties() >> ImmutableSortedSet.of()
         getInputFileProperties() >> ImmutableSortedSet.of()
-        getInputFiles() >> TestFiles.empty()
         getOutputFileProperties() >> ImmutableSortedSet.of()
     }
     def previousState = Stub(PreviousExecutionState) {
