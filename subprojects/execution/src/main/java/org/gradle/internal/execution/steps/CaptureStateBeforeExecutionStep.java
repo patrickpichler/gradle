@@ -47,8 +47,6 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Optional;
 
-import static org.gradle.internal.execution.fingerprint.InputFingerprinter.union;
-
 public class CaptureStateBeforeExecutionStep extends BuildOperationStep<PreviousExecutionContext, CachingResult> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CaptureStateBeforeExecutionStep.class);
 
@@ -199,14 +197,12 @@ public class CaptureStateBeforeExecutionStep extends BuildOperationStep<Previous
             context.getInputFileProperties(),
             work::visitRegularInputs
         );
-        ImmutableSortedMap<String, ValueSnapshot> inputProperties = union(context.getInputProperties(), newInputs.getValueSnapshots());
-        ImmutableSortedMap<String, CurrentFileCollectionFingerprint> inputFileFingerprints = union(context.getInputFileProperties(), newInputs.getFileFingerprints());
 
         return new DefaultBeforeExecutionState(
             implementation,
             additionalImplementations,
-            inputProperties,
-            inputFileFingerprints,
+            newInputs.getAllValueSnapshots(),
+            newInputs.getAllFileFingerprints(),
             unfilteredOutputSnapshots,
             overlappingOutputs
         );
