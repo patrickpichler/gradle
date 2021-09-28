@@ -16,6 +16,8 @@ dependencies {
     implementation(project(":logging"))
     implementation(project(":model-core"))
     implementation(project(":snapshots"))
+    implementation(project(":testing-base"))
+    implementation(project(":testing-jvm"))
 
     integTestImplementation(project(":internal-testing"))
     integTestImplementation(project(":internal-integ-testing"))
