@@ -39,6 +39,7 @@ import org.gradle.internal.execution.OutputSnapshotter;
 import org.gradle.internal.execution.history.ExecutionHistoryCacheAccess;
 import org.gradle.internal.execution.history.ExecutionHistoryStore;
 import org.gradle.internal.execution.history.OutputFilesRepository;
+import org.gradle.internal.execution.history.OutputsCleaner;
 import org.gradle.internal.execution.history.OverlappingOutputDetector;
 import org.gradle.internal.execution.history.changes.ExecutionStateChangeDetector;
 import org.gradle.internal.execution.history.impl.DefaultExecutionHistoryStore;
@@ -80,6 +81,7 @@ import org.gradle.internal.work.WorkerLeaseService;
 import org.gradle.util.GradleVersion;
 
 import java.util.Collections;
+import java.util.function.Supplier;
 
 import static org.gradle.cache.internal.filelock.LockOptionsBuilder.mode;
 
@@ -156,6 +158,7 @@ public class ExecutionGradleServices {
         VirtualFileSystem virtualFileSystem,
         DocumentationRegistry documentationRegistry
     ) {
+        Supplier<OutputsCleaner> skipEmptyWorkOutputsCleanerSupplier = () -> new OutputsCleaner(deleter, buildOutputCleanupRegistry::isOutputOwnedByBuild, buildOutputCleanupRegistry::isOutputOwnedByBuild);
         // @formatter:off
         return new DefaultExecutionEngine(documentationRegistry,
             new IdentifyStep<>(
@@ -163,7 +166,7 @@ public class ExecutionGradleServices {
             new AssignWorkspaceStep<>(
             new LoadPreviousExecutionStateStep<>(
             new MarkSnapshottingInputsStartedStep<>(
-            new SkipEmptyWorkStep(buildOutputCleanupRegistry, deleter, outputChangeListener,
+            new SkipEmptyWorkStep(outputChangeListener, skipEmptyWorkOutputsCleanerSupplier,
             new CaptureStateBeforeExecutionStep(buildOperationExecutor, classLoaderHierarchyHasher, outputSnapshotter, overlappingOutputDetector,
             new ValidateStep<>(virtualFileSystem, validationWarningRecorder,
             new ResolveCachingStateStep(buildCacheController, gradleEnterprisePluginManager.isPresent(),
