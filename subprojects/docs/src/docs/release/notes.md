@@ -5,6 +5,12 @@ This release [introduces a declarative test suite API](#test-suites) for JVM pro
 There are also changes to make builds [more reliable](#reliability), provide [additional details to IDEs when downloading dependencies](#tooling-api), improve [untracked files in custom plugins](#untracked), several [bug fixes](#fixed-issues) and more.
 
 We would like to thank the following community members for their contributions to this release of Gradle:
+<<<<<<< HEAD
+<!-- 
+Include only their name, impactful features should be called out separately below.
+ [Some person](https://github.com/some-person)
+-->
+=======
 
 [Attix Zhang](https://github.com/attix-zhang),
 [anatawa12](https://github.com/anatawa12),
@@ -25,6 +31,7 @@ We would like to thank the following community members for their contributions t
 [Roberto Perez Alcolea](https://github.com/rpalcolea),
 [Xin Wang](https://github.com/scaventz)
 
+>>>>>>> origin/release
 
 ## Upgrade instructions
 
@@ -32,10 +39,39 @@ Switch your build to use Gradle @version@ by updating your wrapper:
 
 `./gradlew wrapper --gradle-version=@version@`
 
-See the [Gradle 7.x upgrade guide](userguide/upgrading_version_7.html#changes_@baseVersion@) to learn about deprecations, breaking changes and other considerations when upgrading to Gradle @version@.
+See the [Gradle 7.x upgrade guide](userguide/upgrading_version_7.html#changes_@baseVersion@) to learn about deprecations, breaking changes and other considerations when upgrading to Gradle @version@. 
 
 For Java, Groovy, Kotlin and Android compatibility, see the [full compatibility notes](userguide/compatibility.html).
 
+<<<<<<< HEAD
+<!-- Do not add breaking changes or deprecations here! Add them to the upgrade guide instead. --> 
+
+<!-- 
+
+================== TEMPLATE ==============================
+
+<a name="FILL-IN-KEY-AREA"></a>
+### FILL-IN-KEY-AREA improvements
+
+<<<FILL IN CONTEXT FOR KEY AREA>>>
+Example:
+> The [configuration cache](userguide/configuration_cache.html) improves build performance by caching the result of
+> the configuration phase. Using the configuration cache, Gradle can skip the configuration phase entirely when
+> nothing that affects the build configuration has changed.
+
+#### FILL-IN-FEATURE
+> HIGHLIGHT the usecase or existing problem the feature solves
+> EXPLAIN how the new release addresses that problem or use case
+> PROVIDE a screenshot or snippet illustrating the new feature, if applicable
+> LINK to the full documentation for more details 
+
+================== END TEMPLATE ==========================
+
+
+==========================================================
+ADD RELEASE FEATURES BELOW
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv -->
+=======
 ## New features and usability improvements
 
 <a name="java17"></a>
@@ -103,30 +139,18 @@ Currently, builds generated with this option will only enable [Test Suites](#tes
 
 ### Version catalog improvements
 
-[Version catalog](userguide/platforms.html#sub:version-catalog-declaration) is a [feature preview](userguide/feature_lifecycle.html#feature_preview) that provides a convenient API for referencing dependencies and their versions. It received the following improvement in this release.
-
-#### Lifted restrictions for alias names
-
-In previous Gradle releases it was not possible to declare aliases with the suffix `plugin`, `version` and other restricted keywords. With this release these restrictions are now lifted. Check the [documentation](userguide/platforms.html#sub:mapping-aliases-to-accessors) for details.
-
-#### Version catalog type unsafe API changes
-
-When using the type unsafe API, all methods accepting [alias references](userguide/platforms.html#sub:mapping-aliases-to-accessors) now can use the exact same string as the alias definition. This means that you can declare and reference `groovy-json` instead of being forced to use `groovy.json` in the type unsafe API.
-
-Note that access to the type unsafe API has changed, please see the [upgrade guide](userguide/upgrading_version_7.html#changes_7.3).
-
-#### Consistent version catalog accessors support in more scenarios
-
-With more possibilities for declaring aliases, some accessors were not supported in specific APIs related to plugin or dependency declarations. This release fixes those issues and accessors can be used consistently in more contexts.
-
-For plugins, if you have `kotlin.js` and `kotlin.js.action` plugins, both can be used in the `plugins` block.
-
-Declarations of dependencies with `platform`, `enforcedPlatform`, `testFixtures` and `force` support all accessor types.
+### Allow copying single files into directories which contain unreadable files.
+>>>>>>> origin/release
 
 
-<a name="reliability"></a>
-## Reliability improvements
 
+<<<<<<< HEAD
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ADD RELEASE FEATURES ABOVE
+==========================================================
+
+-->
+=======
 ### More robust file system watching
 
 When running an incremental build, Gradle needs to understand what has changed since the previous build on the file system. To do this it relies on the operating system's [file system events](userguide/gradle_daemon.html#sec:daemon_watch_fs) whenever possible.
@@ -170,6 +194,7 @@ If a task has any untracked properties, then Gradle does not do any optimization
 For example, such a task will always be out of date and never come from the build cache.
 
 See the samples in the user manual about [Integrating an external tool which does its own up-to-date checking](userguide/more_about_tasks.html#sec:untracked_external_tool).
+>>>>>>> origin/release
 
 Initializing new plugin projects using the [Build Init Plugin](userguide/build_init_plugin.html#build_init_plugin) can also benefit from [the `--incubating` option](#explore-new-behavior-with-gradle-init).
 
@@ -191,9 +216,9 @@ See the User Manual section on the “[Feature Lifecycle](userguide/feature_life
 
 The following are the features that have been promoted in this Gradle release.
 
-### Disabling caching by default
-
-The [`@DisableCachingByDefault` annotation](userguide/build_cache.html#sec:task_output_caching_disabled_by_default) is now a stable feature.
+<!--
+### Example promoted
+-->
 
 ## Fixed issues
 
@@ -207,7 +232,7 @@ We love getting contributions from the Gradle community. For information on cont
 
 ## Reporting problems
 
-If you find a problem with this release, please file a bug on [GitHub Issues](https://github.com/gradle/gradle/issues) adhering to our issue guidelines.
+If you find a problem with this release, please file a bug on [GitHub Issues](https://github.com/gradle/gradle/issues) adhering to our issue guidelines. 
 If you're not sure you're encountering a bug, please use the [forum](https://discuss.gradle.org/c/help-discuss).
 
 We hope you will build happiness with Gradle, and we look forward to your feedback via [Twitter](https://twitter.com/gradle) or on [GitHub](https://github.com/gradle).
